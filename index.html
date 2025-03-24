@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kyle's Forex Lot Size Wizard</title>
+
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#241248">
+    <link rel="apple-touch-icon" href="icon-192x192.png">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f7f7f7;
+        }
+        header {
+            background: #241248;
+            color: white;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: rgb(38, 190, 81);
+            font-size: 26px;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            margin: 0 0 4px 0;
+            text-transform: uppercase;
+        }
+        .subtitle {
+            color: #DBF04E;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+        h2 {
+            text-decoration: underline;
+        }
+        main {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 25px;
+            background: rgb(207, 188, 188);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 1em;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        input:focus, select:focus {
+            border-color: #28a745;
+            outline: none;
+        }
+        .error {
+            border-color: red !important;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            margin: 12px 0;
+            font-size: 1.1em;
+            font-weight: 600;
+            background: #3d2882;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        button:hover {
+            background: #241751;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+        }
+        button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+        button:focus {
+            outline: 2px solid rgba(255, 255, 255, 0.4);
+            outline-offset: 2px;
+        }
+        #result {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 14px;
+            border-radius: 8px;
+            color: rgb(219, 240, 78);
+            display: none;
+        }
+        .success {
+            background: #333433;
+        }
+        .error-msg {
+            background: red;
+        }
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        .spinner {
+             display: inline-block;
+             width: 14px;
+             height: 14px;
+             border: 2px solid white;
+             border-top: 2px solid transparent;
+             border-radius: 50%;
+             animation: spin 0.6s linear infinite;
+             margin-right: 8px;
+        }
+        @keyframes spin {
+             from { transform: rotate(0deg); }
+             to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kyle's Forex Lot Size Expert</h1>
+        <div class="subtitle">Ajomievile Boys</div>
+    </header>
+    <main>
+        <h2>Forex Lot Size Calculator</h2>
+        <label for="balance">Account Balance ($):</label>
+        <input type="number" id="balance" placeholder="Enter balance" min="1" step="any">
+        
+        <label for="risk">Risk Percentage (%):</label>
+        <input type="number" id="risk" placeholder="Enter risk %" min="0.01" max="100" step="any">
+        
+        <label for="stopLoss">Stop Loss (pips):</label>
+        <input type="number" id="stopLoss" placeholder="Enter stop loss in pips" min="1" step="1">
+
+        <label for="lotType">Lot Type:</label>
+        <select id="lotType">
+            <option value="">Select Lot Type</option>
+            <option value="100000">Standard Lot (100,000 units)</option>
+            <option value="10000">Mini Lot (10,000 units)</option>
+            <option value="1000">Micro Lot (1,000 units)</option>
+        </select>
+        
+        <button id="calculate">Calculate</button>
+        <button id="clear">Clear</button>
+        <p id="result"></p>
+    </main>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(() => console.log('Service Worker Registered'));
+        }
+    </script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const calculateButton = document.getElementById("calculate");
+        const balanceInput = document.getElementById("balance");
+        const riskInput = document.getElementById("risk");
+        const stopLossInput = document.getElementById("stopLoss");
+        const lotTypeInput = document.getElementById("lotType");
+        const result = document.getElementById("result");
+        const clearButton = document.getElementById("clear");
+
+        // Disable "Clear" button initially
+        clearButton.disabled = true;
+
+        function updateClearButtonState() {
+            const hasInput = balanceInput.value || riskInput.value || stopLossInput.value || lotTypeInput.value;
+            clearButton.disabled = !hasInput;
+        }
+
+        // Event listener for inputs to enable "Clear" button when needed
+        document.querySelectorAll("input, select").forEach(input => {
+            input.addEventListener("input", updateClearButtonState);
+        });
+
+        calculateButton.addEventListener("click", function() {
+            result.textContent = "";
+            result.style.display = "none";
+
+            const balance = parseFloat(balanceInput.value);
+            let risk = parseFloat(riskInput.value);
+            const stopLoss = parseFloat(stopLossInput.value);
+            const lotSizeMultiplier = parseFloat(lotTypeInput.value);
+
+            // Reset errors
+            balanceInput.classList.remove("error");
+            riskInput.classList.remove("error");
+            stopLossInput.classList.remove("error");
+            lotTypeInput.classList.remove("error");
+
+            let hasError = false;
+
+            if (isNaN(balance) || balance <= 0) {
+                balanceInput.classList.add("error");
+                hasError = true;
+            }
+            if (isNaN(risk) || risk <= 0 || risk > 100) {
+                riskInput.classList.add("error");
+                hasError = true;
+            }
+            if (isNaN(stopLoss) || stopLoss <= 0) {
+                stopLossInput.classList.add("error");
+                hasError = true;
+            }
+            if (isNaN(lotSizeMultiplier) || lotSizeMultiplier <= 0) {
+                lotTypeInput.classList.add("error");
+                hasError = true;
+            }
+
+            if (hasError) {
+                result.textContent = "Please enter valid values in the box(es) above.";
+                result.classList.add("error-msg");
+                result.classList.remove("success");
+                result.style.display = "block";
+                return;
+            }
+
+            risk = risk / 100;
+
+            calculateButton.innerHTML = `<span class="spinner"></span> Calculating...`;
+            calculateButton.classList.add("loading");
+            calculateButton.disabled = true;
+
+            setTimeout(() => {
+                const riskAmount = balance * risk;
+                const pipValue = lotSizeMultiplier / 10000;
+                const lotSize = riskAmount / (stopLoss * pipValue);
+
+                result.textContent = `Recommended: ${lotSize.toFixed(2)} ${getLotTypeName(lotSizeMultiplier)}`;
+                result.classList.remove("error-msg");
+                result.classList.add("success");
+                result.style.display = "block";
+
+                calculateButton.innerHTML = "Calculate";
+                calculateButton.classList.remove("loading");
+                calculateButton.disabled = false;
+            }, 2000);
+        });
+
+        function getLotTypeName(value) {
+            switch(value) {
+                case 100000: return "Standard Lots";
+                case 10000: return "Mini Lots";
+                case 1000: return "Micro Lots";
+                default: return "Lots";
+            }
+        }
+
+        document.querySelectorAll("input").forEach(input => {
+            input.addEventListener("input", function() {
+                if (parseFloat(this.value) > 0) {
+                    this.classList.remove("error");
+                }
+            });
+        });
+
+        clearButton.addEventListener("click", function() {
+            balanceInput.value = "";
+            riskInput.value = "";
+            stopLossInput.value = "";
+            lotTypeInput.value = ""; // Lot type dropdown starts empty
+            result.textContent = "";
+            result.style.display = "none";
+            clearButton.disabled = true;
+        });
+
+    });
+</script>
+</body>
+</html>
