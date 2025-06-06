@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our IT Services</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            overflow-x: hidden;
+            position: relative; /* Ensures no content leaks outside */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #545d71;
+            color: rgb(231, 239, 235);
+            text-align: left;
+            
+        }
+        header {
+            background: url("ReinoLogo.png") no-repeat center/cover;
+            color: #fff;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }   
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Dark overlay for better readability */
+        }
+
+        header h1, 
+        header p {
+            position: relative;
+            z-index: 1; /* Ensures text appears above the overlay */
+        }
+        .button-container {
+            display: flex;
+            margin: 4px;
+            position: relative;
+            backface-visibility: hidden;
+            justify-content: center; /* Centers the buttons horizontally */
+            align-items: center; /* Centers the buttons vertically if needed */
+            gap: 8px; /* Adds spacing between buttons */
+            margin-top: 4px; /* Adjust spacing from header */
+        }
+        .main-button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            background-color: #545d71;
+            color: rgb(241, 246, 244);
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-shadow: 0cap;
+            text-decoration: underline;
+
+            
+        }
+        .main-button:hover {
+            background-color: #616e8a;
+        }
+        #service-buttons {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Creates a responsive grid */
+            gap: 15px;
+            padding: 20px;
+            width: 80%; /* Ensures the grid container takes up enough space */
+            margin: auto; /* Centers the whole grid */
+            
+        }
+        .service-button {
+            font-family: 'Roboto', sans-serif;
+            width: 100%;
+            height: 140px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            background-color: #09417c;
+            color: rgb(211, 227, 231);
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(142, 209, 228, 0.1);
+            transition: 0.3s;
+            
+        }
+        .service-button:hover {
+            text-decoration: underline;
+            transform: scale(1.05);
+            transition: all 0.3s ease-in-out;
+        }
+        section {
+            max-width: 1100px;
+            margin: auto;
+            padding: 20px;
+        }
+
+
+        .web-development {
+            background-image: url('web-dev.jpg');
+        }
+        .website-maintenance {
+            background-image: url('maintenance.jpg');
+        }
+        .graphics-design {
+            background-image: url('design.jpg');
+        }
+
+
+        .package {
+            background: #d3c4c4;
+            width: 250px; /* Set a fixed width for uniformity */
+            padding: 15px;
+            width: 100%;
+            color: #f1f4f5;
+            margin: 15px 0;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgb(80, 179, 162);
+            display: none; /* Hide all packages initially */
+        }
+        form {
+            background: #d3c4c4;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgb(94, 132, 132);
+        }
+        input:focus, textarea:focus {
+            width: 80%;
+            flex-direction: row;
+            padding: 20px;
+            margin: 10px 0;
+            border: 2px solid #074f87;
+            border-radius: 8px;
+            row-gap: 20px;
+            outline: none;
+        }
+        .form-button {
+            width: 15%;
+            margin-top: 6px;
+            background: #074f87;
+            color: #f1f4f5;
+            padding: 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            
+        }
+        .form-button:hover {
+            background: #555;
+        }
+        footer {
+            padding: 20px;
+            text-align: center;
+            background: #222;
+            color: white;
+        }
+
+    </style>
+</head>
+<body onload="showServices()"> <!-- Ensure services show on page load -->
+    <header>
+        <h1> Empowering Your Businesses with Innovative Technological Solutions</h1>
+        <p>Welcome to REINO, where we combine cutting-edge technology, creative design, and a passion for problem-solving to deliver fast, reliable, and affordable digital solutions. Whether you’re a startup, a growing business, or an established enterprise, we’re here to help you thrive in the digital age.</p>
+    </header>
+    
+    <div class="button-container">
+        <button class="main-button" onclick="showServices()">Home</button>
+        <button class="main-button">Portfolio</button>
+        <button class="main-button">Blog</button>
+        <button class="main-button">About Us</button>
+        <button class="main-button">Contact Us</button>
+        <button class="main-button">FAQ</button>
+    </div>
+
+    <section id="services">
+
+        <h2>Our Services</h2>
+
+        <div id="service-buttons">
+            <button class="service-button web-development" onclick="showPackage('web-development-package')">Web Development</button>
+            <div class="package" id="web-development-package">
+                <h3>Web Development (Front-end & Back-end)</h3>
+                <ul>
+                    <li>Custom website & web app development</li>
+                    <li>Responsive UI/UX design</li>
+                    <li>Database & API integration</li>
+                    <li>E-commerce & CMS solutions</li>
+                </ul>
+                <button onclick="showServices()">Back to Services</button>
+            </div>
+
+
+            <button class="service-button" onclick="showPackage('website-maintenance-package')">Website Maintenance</button>
+            <div class="package" id="website-maintenance-package">
+                <h3>Website Maintenance</h3>
+                <ul>
+                    <li>Regular performance checks & updates</li>
+                    <li>Security patches & malware protection</li>
+                    <li>Monthly backups & uptime monitoring</li>
+                    <li>SEO & speed optimization</li>
+                </ul>
+                <button onclick="showServices()">Back to Services</button>
+            </div>
+
+          
+            <button class="service-button" onclick="showPackage('graphics-design-package')">Graphics Design</button>
+            <div class="package" id="graphics-design-package">
+                <h3>Graphics Design</h3>
+                <ul>
+                    <li>Logo & branding design</li>
+                    <li>Website & social media graphics</li>
+                    <li>Business cards, brochures, & flyers</li>
+                    <li>UI/UX design & prototyping</li>
+                </ul>
+                <button onclick="showServices()">Back to Services</button>
+            </div>
+
+
+
+            <button class="service-button" onclick="showPackage('data-excel-package')">Data & Excel Solutions</button>
+            <div class="package" id="data-excel-package">
+            <h3>Data & Excel Solutions</h3>
+            <ul>
+                <li>Data visualization & reporting</li>
+                <li>Custom Excel formulas & automation</li>
+                <li>Database management & optimization</li>
+                <li>Big data analysis & processing</li>
+            </ul>
+            <button onclick="showServices()">Back to Services</button>
+            </div>
+        
+
+            <button class="service-button" onclick="showPackage('api-integration-package')">API Integration</button>
+            <div class="package" id="api-integration-package">
+            <h3>API Integration</h3>
+            <ul>
+                <li>Custom API development & documentation</li>
+                <li>Third-party API integration (Stripe, PayPal, etc.)</li>
+                <li>Secure authentication & authorization (OAuth, JWT)</li>
+                <li>Performance optimization & monitoring</li>
+            </ul>
+            <button onclick="showServices()">Back to Services</button>
+           </div>
+
+        
+            <button class="service-button" onclick="showPackage('web-security-package')">Web Application Security</button>
+            <div class="package" id="web-security-package">
+            <h3>Web Application Security</h3>
+            <ul>
+                <li>Database & API security implementation</li>
+                <li>Penetration testing & vulnerability assessment</li>
+                <li>Firewalls, DDoS protection & encryption</li>
+                <li>Security monitoring & threat prevention</li>
+            </ul>
+            <button onclick="showServices()">Back to Services</button>
+            </div>
+
+
+            <button class="service-button" onclick="showPackage('database-package')">Database</button>
+            <div class="package" id="database-package">
+            <h3>Database (MySQL)</h3>
+            <ul>
+                <li>Database design & optimization</li>
+                <li>Performance tuning & indexing</li>
+                <li>Backup & disaster recovery planning</li>
+                <li>Secure database access & encryption</li>
+            </ul>
+            <button onclick="showServices()">Back to Services</button>
+            </div>
+        </div>
+        
+    </section>
+    
+    <section id="contact">
+        <h2>Get a Free Consultation</h2>
+        <p>Let us know your business needs, and we'll provide the best solutions.</p>
+        <form action="#" method="post">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" placeholder="Tell us about your project" required></textarea>
+            <button type="submit" class="form-button">Request Consultation</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>© 2025 REINO. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Ensure service buttons show on page load
+        function showServices() {
+            // Hide all packages
+            document.querySelectorAll('.package').forEach(pkg => pkg.style.display = 'none');
+
+            // Show service buttons
+            document.getElementById("service-buttons").style.display = "flex"; 
+        }
+
+        function showPackage(packageId) {
+    document.querySelectorAll('.package').forEach(pkg => pkg.style.display = 'none');
+    document.getElementById(packageId).style.display = 'block';
+
+    // Hide service buttons when a package is selected
+    document.getElementById("service-buttons").style.display = "none";
+    }
+ </script>
+</body>
+</html>

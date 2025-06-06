@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our IT Services</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #051f55;
+            align-items: center;
+            overflow-y:scroll;
+            display:inline-block;
+            outline-color: rgb(128, 105, 71);
+            color: rgb(239, 245, 243);
+        }
+        header {
+            background-color: #4c4e5c;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        
+        }  
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            position: relative;
+            backface-visibility: hidden;
+            justify-content: center; /* Centers the buttons horizontally */
+            align-items: center; /* Centers the buttons vertically if needed */
+            gap: 15px; /* Adds spacing between buttons */
+            margin-top: 20px; /* Adjust spacing from header */
+        }
+        .main-button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            background-color: #051f55;
+            color: rgb(186, 231, 216);
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-shadow: 0cap;
+
+            
+        }
+        .main-button:hover {
+            background-color: #1b3265;
+        }
+        #service-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-items: center;
+            gap: 10px; /* Add spacing between buttons */
+            margin-top: 20px;
+           
+            
+        }
+        .service-button {
+            width: 100%;
+            height: 140px;
+            padding: 14px;
+            text-align: center;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            background-color: #064c97;
+            color: rgb(211, 227, 231);
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(142, 209, 228, 0.1);
+            transition: 0.3s;
+            
+        }
+        .service-button:hover {
+            background-color: #0c5361;
+        }
+        section {
+            max-width: 1100px;
+            margin: auto;
+            padding: 20px;
+        }
+        .package {
+            background: #d3c4c4;
+            width: 250px; /* Set a fixed width for uniformity */
+            padding: 15px;
+            width: 100%;
+            color: #f1f4f5;
+            margin: 15px 0;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgb(80, 179, 162);
+            display: none; /* Hide all packages initially */
+        }
+        form {
+            background: #d3c4c4;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgb(94, 132, 132);
+        }
+        input, textarea {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        .form-button {
+            width: 20%;
+            background: #074f87;
+            color: #f1f4f5;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            
+        }
+        .form-button:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body onload="showServices()"> <!-- Ensure services show on page load -->
+    <header>
+        <img src="ReinoLogo.jpg" alt="REINO COMPANY" class="logo">
+        <h1>Empowering Your Businesses with Innovative Technological Solutions</h1>
+        <p>Welcome to REINO, where we combine cutting-edge technology, creative design, and a passion for problem-solving to deliver fast, reliable, and affordable digital solutions. Whether you’re a startup, a growing business, or an established enterprise, we’re here to help you thrive in the digital age.</p>
+    </header>
+    
+    <div class="button-container">
+        <button class="main-button" onclick="showServices()">Home</button>
+        <button class="main-button">Portfolio</button>
+        <button class="main-button">Blog</button>
+        <button class="main-button">About Us</button>
+        <button class="main-button">Contact Us</button>
+        <button class="main-button">FAQ</button>
+    </div>
+
+    <section id="services">
+
+        <h2>Our Services</h2>
+
+        <div id="service-buttons">
+            <button class="service-button" onclick="showPackage('web-development-package')">Web Development</button>
+            <div class="package" id="web-development-package">
+                <h3>Web Development (Front-end & Back-end)</h3>
+                <ul>
+                    <li>Custom website & web app development</li>
+                    <li>Responsive UI/UX design</li>
+                    <li>Database & API integration</li>
+                    <li>E-commerce & CMS solutions</li>
+                </ul>
+            </div>
+
+
+            <button class="service-button" onclick="showPackage('website-maintenance-package')">Website Maintenance</button>
+            <div class="package" id="website-maintenance-package">
+                <h3>Website Maintenance</h3>
+                <ul>
+                    <li>Regular performance checks & updates</li>
+                    <li>Security patches & malware protection</li>
+                    <li>Monthly backups & uptime monitoring</li>
+                    <li>SEO & speed optimization</li>
+                </ul>
+            </div>
+
+          
+            <button class="service-button" onclick="showPackage('graphics-design-package')">Graphics Design</button>
+            <div class="package" id="graphics-design-package">
+                <h3>Graphics Design</h3>
+                <ul>
+                    <li>Logo & branding design</li>
+                    <li>Website & social media graphics</li>
+                    <li>Business cards, brochures, & flyers</li>
+                    <li>UI/UX design & prototyping</li>
+                </ul>
+            </div>
+
+
+
+            <button class="service-button" onclick="showPackage('data-excel-package')">Data & Excel Solutions</button>
+            <div class="package" id="data-excel-package">
+            <h3>Data & Excel Solutions</h3>
+            <ul>
+                <li>Data visualization & reporting</li>
+                <li>Custom Excel formulas & automation</li>
+                <li>Database management & optimization</li>
+                <li>Big data analysis & processing</li>
+            </ul>
+            </div>
+        
+
+            <button class="service-button" onclick="showPackage('api-integration-package')">API Integration</button>
+            <div class="package" id="api-integration-package">
+            <h3>API Integration</h3>
+            <ul>
+                <li>Custom API development & documentation</li>
+                <li>Third-party API integration (Stripe, PayPal, etc.)</li>
+                <li>Secure authentication & authorization (OAuth, JWT)</li>
+                <li>Performance optimization & monitoring</li>
+            </ul>
+           </div>
+
+        
+            <button class="service-button" onclick="showPackage('web-security-package')">Web Application Security</button>
+            <div class="package" id="web-security-package">
+            <h3>Web Application Security</h3>
+            <ul>
+                <li>Database & API security implementation</li>
+                <li>Penetration testing & vulnerability assessment</li>
+                <li>Firewalls, DDoS protection & encryption</li>
+                <li>Security monitoring & threat prevention</li>
+            </ul>
+            </div>
+
+
+            <button class="service-button" onclick="showPackage('database-package')">Database</button>
+            <div class="package" id="database-package">
+            <h3>Database (MySQL)</h3>
+            <ul>
+                <li>Database design & optimization</li>
+                <li>Performance tuning & indexing</li>
+                <li>Backup & disaster recovery planning</li>
+                <li>Secure database access & encryption</li>
+            </ul>
+            </div>
+        </div>
+        
+    </section>
+    
+    <section id="contact">
+        <h2>Get a Free Consultation</h2>
+        <p>Let us know your business needs, and we'll provide the best solutions.</p>
+        <form action="#" method="post">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" placeholder="Tell us about your project" required></textarea>
+            <button type="submit" class="form-button">Request Consultation</button>
+        </form>
+    </section>
+
+    <script>
+        // Ensure service buttons show on page load
+        function showServices() {
+            // Hide all packages
+            document.querySelectorAll('.package').forEach(pkg => pkg.style.display = 'none');
+
+            // Show service buttons
+            document.getElementById("service-buttons").style.display = "flex"; 
+        }
+
+    function showPackage(packageId) {
+    // Hide all packages
+    document.querySelectorAll('.package').forEach(pkg => pkg.style.display = 'none');
+
+// Show the selected package
+document.getElementById(packageId).style.display = 'block';
+    }
+</script>
+
+ 
+    <div>
+        <h4>© 2025 REINO. All rights reserved.</h4>
+    </div>
+</body>
+</html>

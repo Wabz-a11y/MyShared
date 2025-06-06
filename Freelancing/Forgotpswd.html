@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #4c564c;
+}
+
+p {
+    margin: 20px 0;
+}
+
+.loading {
+    display: none;
+    font-size: 16px;
+    color: #FFD700;
+    margin-top: 10px;
+}
+
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid #FFD700;
+    width: 35px;
+    height: 35px;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.error {
+    border: 1px solid red;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    display: block;
+    margin-top: -10px;
+    text-align: left;
+}
+
+.alert-block {
+    width: 80%;
+    margin: 10px auto;
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 5px;
+    display: none; /* Hidden by default */
+    font-size: 14px;
+    text-align: center;
+}
+
+
+    </style>
+
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Password Recovery</h2>
+    <form id="forgot-password-form">
+        <label for="email">Enter your recovery email:</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        <button type="submit">Request Reset Link</button>
+
+        <div class="alert-block" id="alert-block"></div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            Please wait...
+        </div>
+    
+    </form>
+</div>
+
+<p>Return to Log In screen? <a href="SignIn.html">Login</a></p>
+
+<script>
+    document.getElementById("forgot-password-form").addEventListener("submit", async function(event) {
+        event.preventDefault();
+        
+        const emailInput = document.getElementById("email");
+        const alertBlock = document.getElementById("alert-block");
+        const button = event.target.querySelector("button");
+        const loading = document.getElementById("loading");
+
+        // Clear any previous alerts
+        alertBlock.style.display = "none";
+        alertBlock.innerHTML = "";
+
+        // Reset input field style
+        emailInput.classList.remove('error');
+
+        // Convert email to lowercase
+        let email = emailInput.value.trim().toLowerCase();
+        emailInput.value = email; // Update the input value with the lowercase email
+
+        // Validate email format
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailPattern.test(email)) {
+            emailInput.classList.add('error'); // Highlight the input in red
+            alertBlock.innerHTML = "Please enter a valid email address.";
+            alertBlock.style.display = "block";
+            return;
+        }
+
+        // Disable button & show loading
+        button.disabled = true;
+        button.innerHTML = "Sending request...";
+        loading.style.display = "block";
+
+        try {
+            const response = await fetch("http://127.0.0.1:8000/forgot-password", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email })
+            });
+
+            const data = await response.json();
+
+            if (data.message) {
+                alertBlock.innerHTML = data.message;
+                alertBlock.style.display = "block";
+            }
+        } catch (error) {
+            alertBlock.innerHTML = "An error occurred. Please try again later.";
+            alertBlock.style.display = "block";
+            console.error("Error:", error);
+        } finally {
+            // Re-enable button & hide loading
+            button.disabled = false;
+            button.innerHTML = "Request Reset Link";
+            loading.style.display = "none";
+        }
+    });
+</script>
+
+</body>
+</html>
